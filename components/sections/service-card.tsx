@@ -9,25 +9,26 @@ interface ServiceCardProps {
   /** Show the bullet feature list (used on the full Services page). */
   showFeatures?: boolean;
   className?: string;
-  style?: React.CSSProperties;
 }
 
 export function ServiceCard({
   service,
   showFeatures = false,
   className,
-  style,
 }: ServiceCardProps) {
   return (
     <Card
+      variant="glass"
       className={cn(
-        "group h-full transition-all duration-200 hover:-translate-y-1 hover:border-primary/50 hover:shadow-primary-glow",
+        "group relative h-full overflow-hidden transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-primary/40 hover:shadow-glass-hover",
         className,
       )}
-      style={style}
     >
-      <CardContent className="flex h-full flex-col p-7">
-        <span className="inline-flex size-12 items-center justify-center rounded-xl border border-primary/20 bg-primary/10 text-primary transition-transform duration-200 group-hover:scale-105">
+      {/* Hover glow */}
+      <div className="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-300 group-hover:opacity-100 bg-[radial-gradient(60%_80%_at_50%_0%,rgba(174,123,229,0.16),transparent_70%)]" />
+
+      <CardContent className="relative flex h-full flex-col p-7">
+        <span className="inline-flex size-12 items-center justify-center rounded-xl border border-white/10 bg-primary/10 text-primary transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:scale-105">
           <service.icon className="size-6" aria-hidden="true" />
         </span>
 
@@ -39,7 +40,7 @@ export function ServiceCard({
         </p>
 
         {showFeatures && (
-          <ul className="mt-5 space-y-2.5 border-t border-border pt-5">
+          <ul className="mt-5 space-y-2.5 border-t border-white/10 pt-5">
             {service.features.map((feature) => (
               <li
                 key={feature}

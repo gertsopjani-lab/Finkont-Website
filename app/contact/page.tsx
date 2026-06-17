@@ -4,6 +4,7 @@ import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { ContactForm } from "@/components/contact/contact-form";
 import { PageHero } from "@/components/sections/page-hero";
 import { Card, CardContent } from "@/components/ui/card";
+import { Reveal } from "@/components/ui/reveal";
 import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
@@ -37,21 +38,26 @@ export default function ContactPage() {
         <div className="grid gap-10 lg:grid-cols-5">
           {/* Form */}
           <div className="lg:col-span-3">
-            <Card>
-              <CardContent className="p-7 sm:p-9">
-                <ContactForm />
-              </CardContent>
-            </Card>
+            <Reveal>
+              <Card variant="glass">
+                <CardContent className="p-7 sm:p-9">
+                  <ContactForm />
+                </CardContent>
+              </Card>
+            </Reveal>
           </div>
 
           {/* Details */}
           <div className="lg:col-span-2">
             <div className="flex flex-col gap-4">
-              {details.map((detail) => {
+              {details.map((detail, index) => {
                 const content = (
-                  <Card className="transition-colors duration-200 hover:border-primary/50">
+                  <Card
+                    variant="glass"
+                    className="group transition-all duration-300 ease-out hover:-translate-y-1 hover:border-primary/40 hover:shadow-glass-hover"
+                  >
                     <CardContent className="flex items-start gap-4 p-5">
-                      <span className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-primary/20 bg-primary/10 text-primary">
+                      <span className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-primary/10 text-primary transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:scale-105">
                         <detail.icon className="size-5" aria-hidden="true" />
                       </span>
                       <div>
@@ -66,12 +72,16 @@ export default function ContactPage() {
                   </Card>
                 );
 
-                return "href" in detail && detail.href ? (
-                  <a key={detail.label} href={detail.href} className="block">
-                    {content}
-                  </a>
-                ) : (
-                  <div key={detail.label}>{content}</div>
+                return (
+                  <Reveal key={detail.label} delay={index * 80}>
+                    {"href" in detail && detail.href ? (
+                      <a href={detail.href} className="block">
+                        {content}
+                      </a>
+                    ) : (
+                      content
+                    )}
+                  </Reveal>
                 );
               })}
             </div>
