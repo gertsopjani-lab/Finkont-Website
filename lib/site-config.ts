@@ -25,8 +25,8 @@ export const siteConfig: SiteConfig = {
   description:
     "Finkont is a premium accounting firm helping ambitious companies stay compliant, cash-flow positive, and ready to scale.",
   email: "hello@finkont.com",
-  phone: "+1 (415) 555-0119",
-  address: "548 Market Street, Suite 22000, San Francisco, CA 94104",
+  phone: "+383 38 555 019",
+  address: "Prishtina, Kosovo",
   nav: [
     { label: "Home", href: "/" },
     { label: "Services", href: "/services" },

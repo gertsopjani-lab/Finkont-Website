@@ -17,7 +17,7 @@ export function SiteHeader() {
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-white/10 bg-background/60 backdrop-blur-xl">
       <nav className="fk-container flex h-16 items-center justify-between">
         <Link
           href="/"
@@ -74,7 +74,7 @@ export function SiteHeader() {
 
       {/* Mobile menu */}
       {open && (
-        <div className="border-t border-border bg-background md:hidden">
+        <div className="border-t border-white/10 bg-background/80 backdrop-blur-xl md:hidden">
           <div className="fk-container flex flex-col gap-1 py-4">
             {siteConfig.nav.map((link) => (
               <Link

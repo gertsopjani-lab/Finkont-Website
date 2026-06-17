@@ -30,6 +30,17 @@ const config: Config = {
           DEFAULT: "#f4f3ef", // Neutral / contrast elements
           foreground: "#121212",
         },
+        // Secondary depth accent: muted midnight indigo.
+        indigo: {
+          DEFAULT: "#6366f1",
+          muted: "#4f46e5",
+          deep: "#312e81",
+        },
+        // Deep slate tones for layered surfaces.
+        slate: {
+          deep: "#15161d",
+          panel: "#1a1b23",
+        },
         success: "#10b981",
         expense: "#ef4444",
         muted: {
@@ -61,6 +72,11 @@ const config: Config = {
       boxShadow: {
         "primary-glow": "0 12px 30px -8px rgba(174, 123, 229, 0.45)",
         "primary-glow-lg": "0 0 48px -6px rgba(174, 123, 229, 0.55)",
+        // Layered glass elevation: soft drop + inner top highlight.
+        glass:
+          "0 18px 50px -20px rgba(0,0,0,0.7), inset 0 1px 0 0 rgba(255,255,255,0.06)",
+        "glass-hover":
+          "0 30px 70px -24px rgba(174,123,229,0.35), inset 0 1px 0 0 rgba(255,255,255,0.10)",
       },
       keyframes: {
         fadeInUp: {

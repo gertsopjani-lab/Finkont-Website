@@ -2,19 +2,26 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
-const Card = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn(
-      "rounded-2xl border border-border bg-surface text-accent-neutral",
-      className,
-    )}
-    {...props}
-  />
-));
+interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** `glass` applies the layered glassmorphism surface. */
+  variant?: "solid" | "glass";
+}
+
+const Card = React.forwardRef<HTMLDivElement, CardProps>(
+  ({ className, variant = "solid", ...props }, ref) => (
+    <div
+      ref={ref}
+      className={cn(
+        "rounded-2xl text-accent-neutral",
+        variant === "glass"
+          ? "fk-glass"
+          : "border border-border bg-surface",
+        className,
+      )}
+      {...props}
+    />
+  ),
+);
 Card.displayName = "Card";
 
 const CardHeader = React.forwardRef<
