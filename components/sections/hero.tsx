@@ -3,6 +3,7 @@ import { ArrowRight, Sparkles } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Magnetic } from "@/components/ui/magnetic";
 import { Reveal } from "@/components/ui/reveal";
 import { SplitText } from "@/components/ui/split-text";
 
@@ -40,12 +41,14 @@ export function Hero() {
 
           <Reveal delay={640}>
             <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row">
-              <Button asChild size="lg">
-                <Link href="/contact">
-                  Book a consultation
-                  <ArrowRight className="size-4" />
-                </Link>
-              </Button>
+              <Magnetic>
+                <Button asChild size="lg">
+                  <Link href="/contact">
+                    Book a consultation
+                    <ArrowRight className="size-4" />
+                  </Link>
+                </Button>
+              </Magnetic>
               <Button asChild variant="outline" size="lg">
                 <Link href="/services">Explore services</Link>
               </Button>

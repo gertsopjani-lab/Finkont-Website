@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { Magnetic } from "@/components/ui/magnetic";
 import { Reveal } from "@/components/ui/reveal";
 
 interface CtaBandProps {
@@ -30,12 +31,14 @@ export function CtaBand({
               {description}
             </p>
             <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <Button asChild size="lg">
-                <Link href="/contact">
-                  Book a consultation
-                  <ArrowRight className="size-4" />
-                </Link>
-              </Button>
+              <Magnetic>
+                <Button asChild size="lg">
+                  <Link href="/contact">
+                    Book a consultation
+                    <ArrowRight className="size-4" />
+                  </Link>
+                </Button>
+              </Magnetic>
               <Button asChild variant="ghost" size="lg">
                 <Link href="/services">Explore services</Link>
               </Button>
