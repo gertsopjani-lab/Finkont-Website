@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  html,
+  body {
+    @apply bg-background text-accent-neutral antialiased;
+  }
+
+  ::selection {
+    background-color: rgba(174, 123, 229, 0.3);
+  }
+}
+
+@layer components {
+  /* Design-system global transition classes. */
+  .fk-animate-entry {
+    opacity: 0;
+    animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .fk-input-active {
+    animation: pulseBorder 2s infinite ease-in-out;
+  }
+
+  .fk-shimmer {
+    @apply bg-shimmer bg-shimmer animate-shimmer;
+  }
+
+  /* Section container helper. */
+  .fk-container {
+    @apply mx-auto w-full max-w-content px-4 sm:px-6 lg:px-8;
+  }
+}
