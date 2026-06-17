@@ -1,15 +1,19 @@
 import {
   Banknote,
   BarChart3,
+  Blocks,
   Briefcase,
   Calculator,
+  Eye,
   FileSpreadsheet,
   Gauge,
   Landmark,
   Receipt,
+  Crosshair,
   ShieldCheck,
   Sparkles,
   Users,
+  Workflow,
   type LucideIcon,
 } from "lucide-react";
 
@@ -27,9 +31,10 @@ export interface Service {
   icon: LucideIcon;
 }
 
-export interface Stat {
-  value: string;
-  label: string;
+export interface Pillar {
+  title: string;
+  description: string;
+  icon: LucideIcon;
 }
 
 export interface FirmValue {
@@ -38,52 +43,50 @@ export interface FirmValue {
   icon: LucideIcon;
 }
 
-/** Home page value propositions. */
+/** Home page value propositions (impact-driven, no scale metrics). */
 export const valueProps: readonly ValueProp[] = [
   {
-    title: "Always audit-ready",
+    title: "Financial engineering",
     description:
-      "Clean books, reconciled monthly, with documentation that stands up to any review or due-diligence process.",
-    icon: ShieldCheck,
+      "We treat your books like infrastructure—structured, reconciled, and built to hold up under scrutiny, fundraising, and growth.",
+    icon: Calculator,
   },
   {
-    title: "Clarity on demand",
+    title: "Seamless integration",
     description:
-      "Real-time dashboards and plain-English reporting so you always know exactly where your business stands.",
-    icon: Gauge,
+      "Your bank, billing, payroll, and spend tools flow into one source of truth. No spreadsheets stitched together by hand.",
+    icon: Workflow,
   },
   {
-    title: "Built to scale",
+    title: "Clarity at every layer",
     description:
-      "From your first hire to your Series B, our systems and advisors grow with you—no rebuilds required.",
+      "Plain-English reporting and live dashboards translate the numbers into decisions you can actually act on.",
+    icon: Eye,
+  },
+  {
+    title: "Always one step ahead",
+    description:
+      "Proactive, not reactive. We surface risks and opportunities before they hit your runway—not after.",
     icon: Sparkles,
   },
 ];
 
-/** Corporate accounting capabilities (used on Home preview + Services page). */
+/** Corporate accounting capabilities (Home preview + Services page). */
 export const services: readonly Service[] = [
   {
     slug: "bookkeeping",
     title: "Bookkeeping & Close",
     summary:
       "Accurate, reconciled books with a fast, predictable monthly close you can rely on.",
-    features: [
-      "Monthly reconciliations",
-      "Accrual & cash basis",
-      "Month-end close in 5 days",
-    ],
+    features: ["Monthly reconciliations", "Accrual & cash basis", "Fast close"],
     icon: FileSpreadsheet,
   },
   {
     slug: "tax-compliance",
     title: "Tax & Compliance",
     summary:
-      "Proactive tax planning and filing that keeps you compliant and minimizes liability.",
-    features: [
-      "Federal, state & local filings",
-      "Quarterly estimates",
-      "R&D and credit capture",
-    ],
+      "Proactive planning and filing that keeps you compliant and minimizes liability.",
+    features: ["Multi-jurisdiction filings", "Quarterly estimates", "Credits"],
     icon: Receipt,
   },
   {
@@ -91,7 +94,7 @@ export const services: readonly Service[] = [
     title: "Payroll & Benefits",
     summary:
       "Reliable payroll, contractor payments, and benefits administration—fully managed.",
-    features: ["Multi-state payroll", "Contractor 1099s", "Benefits sync"],
+    features: ["Multi-region payroll", "Contractor payments", "Benefits sync"],
     icon: Banknote,
   },
   {
@@ -115,17 +118,37 @@ export const services: readonly Service[] = [
     title: "Reporting & Analytics",
     summary:
       "Decision-ready reporting and KPI dashboards tailored to your business model.",
-    features: ["Custom KPI dashboards", "Variance analysis", "Unit economics"],
+    features: ["Custom dashboards", "Variance analysis", "Unit economics"],
     icon: BarChart3,
   },
 ];
 
-/** Credibility stats band. */
-export const stats: readonly Stat[] = [
-  { value: "$2.4B+", label: "Transactions reconciled" },
-  { value: "650+", label: "Businesses served" },
-  { value: "5-day", label: "Average monthly close" },
-  { value: "99.2%", label: "Client retention" },
+/** Pillars of approach — replaces the old numeric stats band. */
+export const approachPillars: readonly Pillar[] = [
+  {
+    title: "Precision",
+    description:
+      "Every figure is traceable to its source. No rounding away the details that matter.",
+    icon: Crosshair,
+  },
+  {
+    title: "Integration",
+    description:
+      "One connected system—your tools and your finances speaking the same language.",
+    icon: Blocks,
+  },
+  {
+    title: "Clarity",
+    description:
+      "Reporting that reads like a story, not a riddle. You always know where you stand.",
+    icon: Eye,
+  },
+  {
+    title: "Velocity",
+    description:
+      "A close that keeps pace with your business, so insight never arrives too late.",
+    icon: Gauge,
+  },
 ];
 
 /** Firm values for the About page. */
@@ -133,7 +156,7 @@ export const firmValues: readonly FirmValue[] = [
   {
     title: "Precision",
     description:
-      "Every number is traceable. We treat your books with the rigor of a public-company finance team.",
+      "We treat your books with the rigor of a public-company finance team—every number, every time.",
     icon: Calculator,
   },
   {
