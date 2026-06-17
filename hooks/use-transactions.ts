@@ -1,11 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-import type {
-  ApiErrorResponse,
-  TransactionsResponse,
-} from "@/lib/types";
+import type { ApiErrorResponse, TransactionsResponse } from "@/lib/types";
 
 type TransactionsState =
   | { status: "loading"; data: null; error: null }
@@ -20,16 +17,23 @@ interface UseTransactionsResult {
 /**
  * Fetch the business ledger from `GET /api/transactions`.
  *
+ * When `initialData` is supplied (server-rendered via the transactions
+ * service), the hook hydrates straight into the `success` state and skips the
+ * initial client fetch — avoiding a loading flash and a duplicate request.
+ * Subsequent `refetch()` calls go to the API as normal.
+ *
  * All network access and JSON parsing is wrapped in try/catch with a typed,
  * user-safe error message so consumers can render a graceful fallback boundary
  * (per .cursorrules error-handling rules).
  */
-export function useTransactions(): UseTransactionsResult {
-  const [state, setState] = useState<TransactionsState>({
-    status: "loading",
-    data: null,
-    error: null,
-  });
+export function useTransactions(
+  initialData?: TransactionsResponse,
+): UseTransactionsResult {
+  const [state, setState] = useState<TransactionsState>(
+    initialData
+      ? { status: "success", data: initialData, error: null }
+      : { status: "loading", data: null, error: null },
+  );
 
   const load = useCallback(async (signal: AbortSignal): Promise<void> => {
     setState({ status: "loading", data: null, error: null });
@@ -75,7 +79,15 @@ export function useTransactions(): UseTransactionsResult {
     setReloadToken((token) => token + 1);
   }, []);
 
+  // Skip the very first fetch when the server already provided `initialData`.
+  const hydratedFromServer = useRef(initialData !== undefined);
+
   useEffect(() => {
+    if (hydratedFromServer.current) {
+      hydratedFromServer.current = false;
+      return;
+    }
+
     const controller = new AbortController();
     void load(controller.signal);
     return () => controller.abort();

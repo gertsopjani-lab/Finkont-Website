@@ -7,9 +7,15 @@ import { ReportButton } from "@/components/dashboard/report-button";
 import { SummaryCards } from "@/components/dashboard/summary-cards";
 import { Card } from "@/components/ui/card";
 import { useTransactions } from "@/hooks/use-transactions";
+import type { TransactionsResponse } from "@/lib/types";
 
-export function DashboardContent() {
-  const { state, refetch } = useTransactions();
+interface DashboardContentProps {
+  /** Server-rendered ledger used to hydrate the client without a fetch flash. */
+  initialData: TransactionsResponse;
+}
+
+export function DashboardContent({ initialData }: DashboardContentProps) {
+  const { state, refetch } = useTransactions(initialData);
 
   return (
     <div className="space-y-6">
