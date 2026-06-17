@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { Magnetic } from "@/components/ui/magnetic";
 import { siteConfig } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
 
@@ -51,9 +52,11 @@ export function SiteHeader() {
         </div>
 
         <div className="hidden md:block">
-          <Button asChild size="sm">
-            <Link href="/contact">Book a consultation</Link>
-          </Button>
+          <Magnetic>
+            <Button asChild size="sm">
+              <Link href="/contact">Book a consultation</Link>
+            </Button>
+          </Magnetic>
         </div>
 
         {/* Mobile toggle */}

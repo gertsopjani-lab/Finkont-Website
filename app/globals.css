@@ -165,6 +165,28 @@
     opacity: 1;
     transform: none;
   }
+
+  /* ---- Cursor-follow spotlight (position driven by JS CSS vars) ---- */
+  .fk-spotlight {
+    background: radial-gradient(
+      240px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+      rgba(174, 123, 229, 0.18),
+      transparent 72%
+    );
+    opacity: var(--spot-opacity, 0);
+    transition: opacity 0.3s ease;
+  }
+
+  /* ---- 3D cursor tilt (rotation/lift driven by JS CSS vars) ---- */
+  .fk-tilt {
+    transform: perspective(900px) rotateX(var(--rx, 0deg))
+      rotateY(var(--ry, 0deg)) translateY(calc(var(--lift, 0) * -6px));
+    transform-style: preserve-3d;
+    transition:
+      transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.25s ease,
+      border-color 0.25s ease;
+  }
 }
 
 /* Never leave animated content hidden when motion is reduced/disabled. */
@@ -184,5 +206,11 @@
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
+  }
+  .fk-tilt {
+    transform: none !important;
+  }
+  .fk-spotlight {
+    opacity: 0 !important;
   }
 }

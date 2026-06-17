@@ -4,6 +4,7 @@ import { Approach } from "@/components/sections/approach";
 import { CtaBand } from "@/components/sections/cta-band";
 import { PageHero } from "@/components/sections/page-hero";
 import { Card, CardContent } from "@/components/ui/card";
+import { InteractiveCard } from "@/components/ui/interactive-card";
 import { Reveal } from "@/components/ui/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { firmValues } from "@/lib/content";
@@ -86,12 +87,8 @@ export default function AboutPage() {
           <div className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {firmValues.map((value, index) => (
               <Reveal key={value.title} delay={index * 90} className="h-full">
-                <Card
-                  variant="glass"
-                  className="group relative h-full overflow-hidden transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-primary/40 hover:shadow-glass-hover"
-                >
-                  <div className="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-300 group-hover:opacity-100 bg-[radial-gradient(60%_80%_at_50%_0%,rgba(174,123,229,0.16),transparent_70%)]" />
-                  <CardContent className="relative p-7">
+                <InteractiveCard>
+                  <div className="p-7">
                     <span className="inline-flex size-12 items-center justify-center rounded-xl border border-white/10 bg-primary/10 text-primary transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:scale-105">
                       <value.icon className="size-6" aria-hidden="true" />
                     </span>
@@ -101,8 +98,8 @@ export default function AboutPage() {
                     <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                       {value.description}
                     </p>
-                  </CardContent>
-                </Card>
+                  </div>
+                </InteractiveCard>
               </Reveal>
             ))}
           </div>

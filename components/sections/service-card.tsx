@@ -1,6 +1,6 @@
 import { Check } from "lucide-react";
 
-import { Card, CardContent } from "@/components/ui/card";
+import { InteractiveCard } from "@/components/ui/interactive-card";
 import type { Service } from "@/lib/content";
 import { cn } from "@/lib/utils";
 
@@ -17,17 +17,8 @@ export function ServiceCard({
   className,
 }: ServiceCardProps) {
   return (
-    <Card
-      variant="glass"
-      className={cn(
-        "group relative h-full overflow-hidden transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-primary/40 hover:shadow-glass-hover",
-        className,
-      )}
-    >
-      {/* Hover glow */}
-      <div className="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-300 group-hover:opacity-100 bg-[radial-gradient(60%_80%_at_50%_0%,rgba(174,123,229,0.16),transparent_70%)]" />
-
-      <CardContent className="relative flex h-full flex-col p-7">
+    <InteractiveCard className={cn("h-full", className)}>
+      <div className="flex h-full flex-col p-7">
         <span className="inline-flex size-12 items-center justify-center rounded-xl border border-white/10 bg-primary/10 text-primary transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:scale-105">
           <service.icon className="size-6" aria-hidden="true" />
         </span>
@@ -52,7 +43,7 @@ export function ServiceCard({
             ))}
           </ul>
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </InteractiveCard>
   );
 }

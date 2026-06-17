@@ -1,4 +1,4 @@
-import { Card, CardContent } from "@/components/ui/card";
+import { InteractiveCard } from "@/components/ui/interactive-card";
 import { Reveal } from "@/components/ui/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { valueProps } from "@/lib/content";
@@ -30,14 +30,8 @@ export function ValueProps() {
             delay={index * 90}
             className={cn(BENTO_SPANS[index] ?? "lg:col-span-1", "h-full")}
           >
-            <Card
-              variant="glass"
-              className="group relative h-full overflow-hidden transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-primary/40 hover:shadow-glass-hover"
-            >
-              {/* Hover glow */}
-              <div className="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-300 group-hover:opacity-100 bg-[radial-gradient(60%_80%_at_30%_0%,rgba(174,123,229,0.16),transparent_70%)]" />
-
-              <CardContent className="relative flex h-full flex-col p-7">
+            <InteractiveCard>
+              <div className="flex h-full flex-col p-7">
                 <span className="inline-flex size-12 items-center justify-center rounded-xl border border-white/10 bg-primary/10 text-primary transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:scale-105">
                   <prop.icon className="size-6" aria-hidden="true" />
                 </span>
@@ -47,8 +41,8 @@ export function ValueProps() {
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                   {prop.description}
                 </p>
-              </CardContent>
-            </Card>
+              </div>
+            </InteractiveCard>
           </Reveal>
         ))}
       </div>
