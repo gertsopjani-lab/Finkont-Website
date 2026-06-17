@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
+import { AmbientBackground } from "@/components/layout/ambient-background";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { siteConfig } from "@/lib/site-config";
@@ -35,7 +36,14 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" className={`dark ${inter.variable}`}>
+      <head>
+        {/* No-JS fallback: ensure scroll/word reveal content is always visible. */}
+        <noscript>
+          <style>{`.fk-reveal,.fk-word{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
+      </head>
       <body className="flex min-h-screen flex-col bg-background font-sans text-accent-neutral">
+        <AmbientBackground />
         <SiteHeader />
         <main className="flex-1">{children}</main>
         <SiteFooter />

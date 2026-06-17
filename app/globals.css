@@ -4,9 +4,9 @@
 
 /*
  * Design-system keyframes defined explicitly (not only in tailwind.config.ts).
- * The global classes below reference these by name, so they must always ship —
+ * Global classes below reference these by name, so they must always ship —
  * Tailwind only emits its own `@keyframes` when a matching `animate-*` utility
- * is actually used in markup, which would otherwise tree-shake these away.
+ * appears in markup, which would otherwise tree-shake these away.
  */
 @keyframes fadeInUp {
   from {
@@ -43,6 +43,30 @@
   }
 }
 
+/* Slow drifting ambient mesh blobs. */
+@keyframes meshDrift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  33% {
+    transform: translate3d(4%, -3%, 0) scale(1.12);
+  }
+  66% {
+    transform: translate3d(-4%, 3%, 0) scale(0.94);
+  }
+}
+
+/* Sweeping sheen for buttons / refraction accents. */
+@keyframes shine {
+  0% {
+    transform: translateX(-120%) skewX(-12deg);
+  }
+  100% {
+    transform: translateX(220%) skewX(-12deg);
+  }
+}
+
 @layer base {
   :root {
     color-scheme: dark;
@@ -63,7 +87,7 @@
 }
 
 @layer components {
-  /* Design-system global transition classes. */
+  /* ---- Legacy design-system entrance classes (still referenced) ---- */
   .fk-animate-entry {
     opacity: 0;
     animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -81,16 +105,84 @@
   .fk-container {
     @apply mx-auto w-full max-w-content px-4 sm:px-6 lg:px-8;
   }
+
+  /* ---- Premium glass surface ---- */
+  .fk-glass {
+    @apply border border-white/10 bg-white/[0.035] shadow-glass backdrop-blur-md;
+  }
+
+  /* ---- Ambient mesh blob ---- */
+  .fk-mesh-blob {
+    @apply pointer-events-none absolute rounded-full;
+    filter: blur(80px);
+    animation: meshDrift 22s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  /* ---- Ultra-thin crosshair grid overlay (masked to fade at edges) ---- */
+  .fk-grid-overlay {
+    background-image:
+      linear-gradient(to right, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+    background-size: 56px 56px;
+    -webkit-mask-image: radial-gradient(
+      ellipse 75% 60% at 50% 0%,
+      #000 25%,
+      transparent 78%
+    );
+    mask-image: radial-gradient(
+      ellipse 75% 60% at 50% 0%,
+      #000 25%,
+      transparent 78%
+    );
+  }
+
+  /* ---- Viewport-triggered spring reveal ---- */
+  .fk-reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.7s cubic-bezier(0.34, 1.4, 0.5, 1);
+    will-change: transform, opacity;
+  }
+  .fk-reveal[data-show="true"] {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ---- Per-word split-text reveal ---- */
+  .fk-word {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(0.5em);
+    transition:
+      opacity 0.6s ease,
+      transform 0.6s cubic-bezier(0.34, 1.5, 0.5, 1);
+    will-change: transform, opacity;
+  }
+  .fk-word[data-show="true"] {
+    opacity: 1;
+    transform: none;
+  }
 }
 
-/* Never leave entrance-animated content hidden when motion is reduced/disabled. */
+/* Never leave animated content hidden when motion is reduced/disabled. */
 @media (prefers-reduced-motion: reduce) {
   .fk-animate-entry {
     animation: none;
     opacity: 1;
   }
-
   .fk-input-active {
     animation: none;
+  }
+  .fk-mesh-blob {
+    animation: none;
+  }
+  .fk-reveal,
+  .fk-word {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
   }
 }
