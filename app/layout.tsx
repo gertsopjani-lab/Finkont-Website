@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
-import { AmbientBackground } from "@/components/layout/ambient-background";
+import { InteractiveBackground } from "@/components/layout/interactive-background";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { siteConfig } from "@/lib/site-config";
@@ -43,7 +43,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         </noscript>
       </head>
       <body className="flex min-h-screen flex-col bg-background font-sans text-accent-neutral">
-        <AmbientBackground />
+        <InteractiveBackground />
         <SiteHeader />
         <main className="flex-1">{children}</main>
         <SiteFooter />

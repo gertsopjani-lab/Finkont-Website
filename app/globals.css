@@ -43,20 +43,6 @@
   }
 }
 
-/* Slow drifting ambient mesh blobs. */
-@keyframes meshDrift {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  33% {
-    transform: translate3d(4%, -3%, 0) scale(1.12);
-  }
-  66% {
-    transform: translate3d(-4%, 3%, 0) scale(0.94);
-  }
-}
-
 /* Sweeping sheen for buttons / refraction accents. */
 @keyframes shine {
   0% {
@@ -109,14 +95,6 @@
   /* ---- Premium glass surface ---- */
   .fk-glass {
     @apply border border-white/10 bg-white/[0.035] shadow-glass backdrop-blur-md;
-  }
-
-  /* ---- Ambient mesh blob ---- */
-  .fk-mesh-blob {
-    @apply pointer-events-none absolute rounded-full;
-    filter: blur(80px);
-    animation: meshDrift 22s ease-in-out infinite;
-    will-change: transform;
   }
 
   /* ---- Ultra-thin crosshair grid overlay (masked to fade at edges) ---- */
@@ -196,9 +174,6 @@
     opacity: 1;
   }
   .fk-input-active {
-    animation: none;
-  }
-  .fk-mesh-blob {
     animation: none;
   }
   .fk-reveal,
