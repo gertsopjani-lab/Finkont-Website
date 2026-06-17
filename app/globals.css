@@ -2,6 +2,47 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * Design-system keyframes defined explicitly (not only in tailwind.config.ts).
+ * The global classes below reference these by name, so they must always ship —
+ * Tailwind only emits its own `@keyframes` when a matching `animate-*` utility
+ * is actually used in markup, which would otherwise tree-shake these away.
+ */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulseBorder {
+  0% {
+    border-color: rgba(174, 123, 229, 0.3);
+    box-shadow: 0 0 0 0px rgba(174, 123, 229, 0.2);
+  }
+  50% {
+    border-color: rgba(174, 123, 229, 0.8);
+    box-shadow: 0 0 12px 2px rgba(174, 123, 229, 0.15);
+  }
+  100% {
+    border-color: rgba(174, 123, 229, 0.3);
+    box-shadow: 0 0 0 0px rgba(174, 123, 229, 0.2);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
 @layer base {
   :root {
     color-scheme: dark;
@@ -39,5 +80,17 @@
   /* Section container helper. */
   .fk-container {
     @apply mx-auto w-full max-w-content px-4 sm:px-6 lg:px-8;
+  }
+}
+
+/* Never leave entrance-animated content hidden when motion is reduced/disabled. */
+@media (prefers-reduced-motion: reduce) {
+  .fk-animate-entry {
+    animation: none;
+    opacity: 1;
+  }
+
+  .fk-input-active {
+    animation: none;
   }
 }
