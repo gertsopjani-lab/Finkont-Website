@@ -42,7 +42,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <style>{`.fk-reveal,.fk-word{opacity:1!important;transform:none!important}`}</style>
         </noscript>
       </head>
-      <body className="flex min-h-screen flex-col bg-background font-sans text-accent-neutral">
+      <body className="flex min-h-screen flex-col font-sans text-accent-neutral">
         <InteractiveBackground />
         <SiteHeader />
         <main className="flex-1">{children}</main>

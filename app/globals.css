@@ -58,13 +58,15 @@
     color-scheme: dark;
   }
 
+  /* Dark base lives on <html> so it fills the viewport (canvas backdrop).
+     <body> stays transparent so the fixed -z-10 particle layer is visible. */
   html {
+    @apply bg-background;
     scroll-behavior: smooth;
   }
 
-  html,
   body {
-    @apply bg-background text-accent-neutral antialiased;
+    @apply text-accent-neutral antialiased;
   }
 
   ::selection {

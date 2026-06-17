@@ -308,7 +308,7 @@ export function InteractiveBackground() {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 -z-10 h-full w-full bg-background opacity-40"
+      className="pointer-events-none fixed inset-0 -z-10 h-full w-full opacity-40"
     >
       <Particles
         particleCount={150}
