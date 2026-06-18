@@ -3,8 +3,19 @@ export interface NavLink {
   href: string;
 }
 
+/** Supported social platforms (maps to an icon in the SocialLinks component). */
+export type SocialPlatform = "facebook" | "instagram";
+
+export interface SocialLink {
+  label: string;
+  href: string;
+  platform: SocialPlatform;
+}
+
 export interface SiteConfig {
   name: string;
+  /** Path (in /public) to the brand logo asset. */
+  logo: string;
   tagline: string;
   description: string;
   email: string;
@@ -12,7 +23,7 @@ export interface SiteConfig {
   address: string;
   nav: readonly NavLink[];
   legal: readonly NavLink[];
-  social: readonly NavLink[];
+  social: readonly SocialLink[];
 }
 
 /**
@@ -21,12 +32,13 @@ export interface SiteConfig {
  */
 export const siteConfig: SiteConfig = {
   name: "Finkont",
+  logo: "/logo.svg",
   tagline: "Accounting, engineered for modern businesses.",
   description:
     "Finkont is a premium accounting firm helping ambitious companies stay compliant, cash-flow positive, and ready to scale.",
-  email: "hello@finkont.com",
-  phone: "+383 38 555 019",
-  address: "Prishtina, Kosovo",
+  email: "fin.kont2023@gmail.com",
+  phone: "+383 49 152 152",
+  address: "Pejton, Prishtina, Kosovo",
   nav: [
     { label: "Home", href: "/" },
     { label: "Services", href: "/services" },
@@ -38,7 +50,15 @@ export const siteConfig: SiteConfig = {
     { label: "Terms", href: "/contact" },
   ],
   social: [
-    { label: "LinkedIn", href: "https://www.linkedin.com" },
-    { label: "X", href: "https://x.com" },
+    {
+      label: "Facebook",
+      href: "https://www.facebook.com/share/18JDsFqfEg/",
+      platform: "facebook",
+    },
+    {
+      label: "Instagram",
+      href: "https://www.instagram.com/finkontofficial",
+      platform: "instagram",
+    },
   ],
 };
