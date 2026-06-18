@@ -7,38 +7,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  validateContact,
+  type ContactFieldErrors,
+  type ContactPayload,
+  type ContactResponse,
+} from "@/lib/contact";
 import { cn } from "@/lib/utils";
 
-interface ContactFields {
-  name: string;
-  email: string;
-  company: string;
-  message: string;
-}
-
-type FieldErrors = Partial<Record<keyof ContactFields, string>>;
-
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+type ContactFields = ContactPayload;
+type FieldErrors = ContactFieldErrors;
 
 function createInitialFields(): ContactFields {
   return { name: "", email: "", company: "", message: "" };
-}
-
-/** Validate the contact form entirely on the client (no backend). */
-function validate(fields: ContactFields): FieldErrors {
-  const errors: FieldErrors = {};
-
-  if (fields.name.trim().length < 2) {
-    errors.name = "Please enter your name.";
-  }
-  if (!EMAIL_PATTERN.test(fields.email.trim())) {
-    errors.email = "Please enter a valid email address.";
-  }
-  if (fields.message.trim().length < 10) {
-    errors.message = "Please share a little more detail (10+ characters).";
-  }
-
-  return errors;
 }
 
 export function ContactForm() {
@@ -75,7 +56,7 @@ export function ContactForm() {
     event.preventDefault();
     setFormError(null);
 
-    const nextErrors = validate(fields);
+    const nextErrors = validateContact(fields);
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0) {
       return;
@@ -84,13 +65,39 @@ export function ContactForm() {
     setStatus("submitting");
 
     try {
-      // No backend: simulate a network round-trip so the UX is realistic.
-      await new Promise((resolve) => setTimeout(resolve, 900));
-      setStatus("success");
-      setFields(createInitialFields());
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(fields),
+      });
+
+      let body: ContactResponse | null = null;
+      try {
+        body = (await response.json()) as ContactResponse;
+      } catch {
+        body = null;
+      }
+
+      if (response.ok && body?.ok) {
+        setStatus("success");
+        setFields(createInitialFields());
+        return;
+      }
+
+      if (body && !body.ok) {
+        if (body.fieldErrors) {
+          setErrors(body.fieldErrors);
+        }
+        setFormError(body.error);
+      } else {
+        setFormError("Something went wrong. Please try again.");
+      }
+      setStatus("idle");
     } catch {
       setStatus("idle");
-      setFormError("Something went wrong. Please try again.");
+      setFormError(
+        "We couldn't reach the server. Check your connection and try again.",
+      );
     }
   };
 
