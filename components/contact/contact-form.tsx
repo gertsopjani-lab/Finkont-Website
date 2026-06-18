@@ -7,48 +7,28 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  validateContact,
+  type ContactFieldErrors,
+  type ContactPayload,
+  type ContactResponse,
+} from "@/lib/contact";
 import { cn } from "@/lib/utils";
 
-interface ContactFields {
-  name: string;
-  email: string;
-  company: string;
-  message: string;
-}
-
-type FieldErrors = Partial<Record<keyof ContactFields, string>>;
-
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+type ContactFields = ContactPayload;
+type FieldErrors = ContactFieldErrors;
 
 function createInitialFields(): ContactFields {
-  return { name: "", email: "", company: "", message: "" };
-}
-
-/** Validate the contact form entirely on the client (no backend). */
-function validate(fields: ContactFields): FieldErrors {
-  const errors: FieldErrors = {};
-
-  if (fields.name.trim().length < 2) {
-    errors.name = "Please enter your name.";
-  }
-  if (!EMAIL_PATTERN.test(fields.email.trim())) {
-    errors.email = "Please enter a valid email address.";
-  }
-  if (fields.message.trim().length < 10) {
-    errors.message = "Please share a little more detail (10+ characters).";
-  }
-
-  return errors;
+  return { name: "", email: "", phone: "", message: "" };
 }
 
 export function ContactForm() {
   const [fields, setFields] = useState<ContactFields>(createInitialFields);
   const [errors, setErrors] = useState<FieldErrors>({});
   const [focused, setFocused] = useState<keyof ContactFields | null>(null);
-  const [status, setStatus] = useState<"idle" | "submitting" | "success">(
-    "idle",
-  );
-  const [formError, setFormError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const update = <K extends keyof ContactFields>(
     key: K,
@@ -73,30 +53,56 @@ export function ContactForm() {
     event: React.FormEvent<HTMLFormElement>,
   ): Promise<void> => {
     event.preventDefault();
-    setFormError(null);
+    setErrorMessage(null);
 
-    const nextErrors = validate(fields);
+    const nextErrors = validateContact(fields);
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0) {
       return;
     }
 
-    setStatus("submitting");
+    setIsSubmitting(true);
 
     try {
-      // No backend: simulate a network round-trip so the UX is realistic.
-      await new Promise((resolve) => setTimeout(resolve, 900));
-      setStatus("success");
-      setFields(createInitialFields());
+      const response = await fetch("/api/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(fields),
+      });
+
+      let body: ContactResponse | null = null;
+      try {
+        body = (await response.json()) as ContactResponse;
+      } catch {
+        body = null;
+      }
+
+      if (response.ok && body?.ok) {
+        setIsSuccess(true);
+        setFields(createInitialFields());
+        return;
+      }
+
+      if (body && !body.ok) {
+        if (body.fieldErrors) {
+          setErrors(body.fieldErrors);
+        }
+        setErrorMessage(body.error);
+      } else {
+        setErrorMessage("Something went wrong. Please try again.");
+      }
     } catch {
-      setStatus("idle");
-      setFormError("Something went wrong. Please try again.");
+      setErrorMessage(
+        "We couldn't reach the server. Check your connection and try again.",
+      );
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  if (status === "success") {
+  if (isSuccess) {
     return (
-      <div className="flex flex-col items-center gap-4 rounded-2xl border border-success/40 bg-success/10 p-10 text-center">
+      <div className="fk-glass flex flex-col items-center gap-4 rounded-2xl border-success/40 p-10 text-center">
         <span className="flex size-12 items-center justify-center rounded-full bg-success/15 text-success">
           <CheckCircle2 className="size-7" aria-hidden="true" />
         </span>
@@ -108,14 +114,12 @@ export function ContactForm() {
             A Finkont advisor will reach out within one business day.
           </p>
         </div>
-        <Button variant="outline" onClick={() => setStatus("idle")}>
+        <Button variant="outline" onClick={() => setIsSuccess(false)}>
           Send another message
         </Button>
       </div>
     );
   }
-
-  const isSubmitting = status === "submitting";
 
   return (
     <form onSubmit={handleSubmit} noValidate className="grid gap-5">
@@ -157,17 +161,20 @@ export function ContactForm() {
       </div>
 
       <div className="grid gap-1.5">
-        <Label htmlFor="company">Company</Label>
+        <Label htmlFor="phone">Phone</Label>
         <Input
-          id="company"
-          name="company"
-          autoComplete="organization"
-          placeholder="Company name (optional)"
-          value={fields.company}
-          onChange={(e) => update("company", e.target.value)}
-          {...focusProps("company")}
-          className={fieldClass("company")}
+          id="phone"
+          name="phone"
+          type="tel"
+          autoComplete="tel"
+          placeholder="+383 49 152 152 (optional)"
+          value={fields.phone}
+          onChange={(e) => update("phone", e.target.value)}
+          aria-invalid={Boolean(errors.phone)}
+          {...focusProps("phone")}
+          className={fieldClass("phone")}
         />
+        {errors.phone && <p className="text-xs text-expense">{errors.phone}</p>}
       </div>
 
       <div className="grid gap-1.5">
@@ -187,16 +194,21 @@ export function ContactForm() {
         )}
       </div>
 
-      {formError && (
+      {errorMessage && (
         <p
           role="alert"
           className="rounded-lg border border-expense/40 bg-expense/10 px-3 py-2 text-sm text-expense"
         >
-          {formError}
+          {errorMessage}
         </p>
       )}
 
-      <Button type="submit" size="lg" disabled={isSubmitting} aria-busy={isSubmitting}>
+      <Button
+        type="submit"
+        size="lg"
+        disabled={isSubmitting}
+        aria-busy={isSubmitting}
+      >
         {isSubmitting ? (
           <Loader2 className="size-4 animate-spin" aria-hidden="true" />
         ) : (
