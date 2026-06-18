@@ -83,14 +83,27 @@ Route (app)                    Rendering
 /                              ○ Static
 /services                      ○ Static
 /about                         ○ Static
-/contact                       ○ Static   (client-side form, no backend)
+/contact                       ○ Static   (form posts to the API route below)
+/api/contact                   ƒ Dynamic  (server route: sends email via SMTP)
 ```
 
 ### 0. Prerequisites & pre-flight checks
 
 - **Node.js 18.18+ (Node 20 LTS recommended).** This is the runtime hosts will
   use to build the app. Pin it for reproducible builds (see step 3).
-- **No environment variables are required.** The site reads no secrets.
+- **Contact form email (optional but required for the form to send).** The
+  `/api/contact` route delivers messages over SMTP. Set these env vars (see
+  `.env.example`) in your host's dashboard:
+  - `SMTP_USER`, `SMTP_PASSWORD` — for Gmail, use an **App Password** (enable
+    2-Step Verification first). `SMTP_HOST`/`SMTP_PORT` default to
+    `smtp.gmail.com:465`.
+  - Optional: `CONTACT_TO` (recipient, defaults to the firm email),
+    `CONTACT_FROM`.
+  - Without these, the form stays functional but returns a graceful
+    "not configured" message instead of sending.
+- The contact route is server-rendered, so it needs a Node host
+  (Vercel/Netlify). It does **not** work with the pure static export in
+  Option C below.
 - Run the same checks CI/hosts run, locally, before pushing:
 
 ```bash
