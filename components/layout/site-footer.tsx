@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
 
+import { SocialLinks } from "@/components/layout/social-links";
+import { BrandLogo } from "@/components/ui/brand-logo";
 import { siteConfig } from "@/lib/site-config";
 
 export function SiteFooter() {
@@ -12,17 +14,11 @@ export function SiteFooter() {
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
           <div className="lg:col-span-2">
-            <Link href="/" className="flex items-center gap-2">
-              <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-base font-bold text-primary-foreground">
-                F
-              </span>
-              <span className="text-lg font-semibold tracking-tight text-accent-neutral">
-                {siteConfig.name}
-              </span>
-            </Link>
+            <BrandLogo />
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
               {siteConfig.description}
             </p>
+            <SocialLinks className="mt-6" />
           </div>
 
           {/* Navigation */}
@@ -74,19 +70,17 @@ export function SiteFooter() {
 
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 sm:flex-row">
           <p className="text-xs text-muted">
-            &copy; {year} {siteConfig.name}, Inc. All rights reserved.
+            &copy; {year} {siteConfig.name}. All rights reserved.
           </p>
           <div className="flex items-center gap-5">
-            {siteConfig.social.map((link) => (
-              <a
+            {siteConfig.legal.map((link) => (
+              <Link
                 key={link.label}
                 href={link.href}
-                target="_blank"
-                rel="noreferrer"
                 className="text-xs text-muted-foreground transition-colors hover:text-primary"
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </div>
         </div>

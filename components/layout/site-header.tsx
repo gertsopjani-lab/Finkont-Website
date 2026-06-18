@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 
+import { BrandLogo } from "@/components/ui/brand-logo";
 import { Button } from "@/components/ui/button";
 import { Magnetic } from "@/components/ui/magnetic";
 import { siteConfig } from "@/lib/site-config";
@@ -20,18 +21,7 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-white/10 bg-background/60 backdrop-blur-xl">
       <nav className="fk-container flex h-16 items-center justify-between">
-        <Link
-          href="/"
-          className="flex items-center gap-2"
-          onClick={() => setOpen(false)}
-        >
-          <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-base font-bold text-primary-foreground">
-            F
-          </span>
-          <span className="text-lg font-semibold tracking-tight text-accent-neutral">
-            {siteConfig.name}
-          </span>
-        </Link>
+        <BrandLogo onNavigate={() => setOpen(false)} />
 
         {/* Desktop nav */}
         <div className="hidden items-center gap-1 md:flex">
