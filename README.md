@@ -83,14 +83,24 @@ Route (app)                    Rendering
 /                              ○ Static
 /services                      ○ Static
 /about                         ○ Static
-/contact                       ○ Static   (client-side form, no backend)
+/contact                       ○ Static   (form posts to the API route below)
+/api/send                      ƒ Dynamic  (server route: sends email via Resend)
 ```
 
 ### 0. Prerequisites & pre-flight checks
 
 - **Node.js 18.18+ (Node 20 LTS recommended).** This is the runtime hosts will
   use to build the app. Pin it for reproducible builds (see step 3).
-- **No environment variables are required.** The site reads no secrets.
+- **Contact form email (required for the form to send).** The `/api/send` route
+  delivers messages via [Resend](https://resend.com). Set this env var (see
+  `.env.example`) in your host's dashboard:
+  - `RESEND_API_KEY` — your Resend API key.
+  - Optional: `CONTACT_TO` (recipient, defaults to `fin.kont2023@gmail.com`).
+  - Without it, the form stays functional but returns a graceful
+    "not configured" message instead of sending.
+- The contact route is server-rendered, so it needs a Node host
+  (Vercel/Netlify). It does **not** work with the pure static export in
+  Option C below.
 - Run the same checks CI/hosts run, locally, before pushing:
 
 ```bash
