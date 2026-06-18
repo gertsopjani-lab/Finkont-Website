@@ -22,7 +22,7 @@ const details = [
     href: `tel:${siteConfig.phone.replace(/[^+\d]/g, "")}`,
   },
   { icon: MapPin, label: "Office", value: siteConfig.address },
-  { icon: Clock, label: "Hours", value: "Mon–Fri · 9am–6pm PT" },
+  { icon: Clock, label: "Hours", value: "Mon–Fri · 9am–6pm CET" },
 ] as const;
 
 export default function ContactPage() {
