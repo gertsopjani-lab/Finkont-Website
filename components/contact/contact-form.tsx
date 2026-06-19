@@ -22,6 +22,36 @@ function createInitialFields(): ContactFields {
   return { name: "", email: "", phone: "", message: "" };
 }
 
+/** Format Kosovo phone numbers as "+383 XX XXX XXX" while typing or pasting. */
+function formatKosovoPhone(input: string): string {
+  let digits = input.replace(/\D/g, "");
+
+  if (digits.length === 0) {
+    return "";
+  }
+
+  if (!digits.startsWith("383")) {
+    digits = `383${digits}`;
+  }
+
+  digits = digits.slice(0, 11);
+
+  const rest = digits.slice(3);
+  let formatted = "+383";
+
+  if (rest.length > 0) {
+    formatted += ` ${rest.slice(0, 2)}`;
+  }
+  if (rest.length > 2) {
+    formatted += ` ${rest.slice(2, 5)}`;
+  }
+  if (rest.length > 5) {
+    formatted += ` ${rest.slice(5, 8)}`;
+  }
+
+  return formatted;
+}
+
 export function ContactForm() {
   const [fields, setFields] = useState<ContactFields>(createInitialFields);
   const [errors, setErrors] = useState<FieldErrors>({});
@@ -125,12 +155,12 @@ export function ContactForm() {
     <form onSubmit={handleSubmit} noValidate className="grid gap-5">
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="grid gap-1.5">
-          <Label htmlFor="name">Name</Label>
+          <Label htmlFor="name">Name and Surname</Label>
           <Input
             id="name"
             name="name"
             autoComplete="name"
-            placeholder="Jordan Rivera"
+            placeholder="Name and Surname"
             value={fields.name}
             onChange={(e) => update("name", e.target.value)}
             aria-invalid={Boolean(errors.name)}
@@ -167,9 +197,9 @@ export function ContactForm() {
           name="phone"
           type="tel"
           autoComplete="tel"
-          placeholder="+383 49 152 152 (optional)"
+          placeholder="+383 XX XXX XXX"
           value={fields.phone}
-          onChange={(e) => update("phone", e.target.value)}
+          onChange={(e) => update("phone", formatKosovoPhone(e.target.value))}
           aria-invalid={Boolean(errors.phone)}
           {...focusProps("phone")}
           className={fieldClass("phone")}
